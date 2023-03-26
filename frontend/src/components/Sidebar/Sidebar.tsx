@@ -6,13 +6,14 @@ import {
   RiMenuFill,
   RiCloseLine,
   RiLogoutCircleLine,
-  RiChat4Line,
   RiUserLine,
+  RiAddLine,
 } from "react-icons/ri";
 import { resetUser } from "../../redux/states/user.state";
 import { resetToken } from "../../redux/states/token.state";
 import { RootState } from "../../redux/store";
-import UserChats from "./components/UserChats";
+import NavUserChats from "./components/NavUserChats";
+import { resetMessage } from "../../redux/states/messages.state";
 
 function Sidebar() {
   const user = useSelector((state: RootState) => state.user);
@@ -41,18 +42,18 @@ function Sidebar() {
           <ul>
             <li>
               <NavLink
-                to="/chat"
+                to="/new-chat"
                 className={({ isActive }) =>
                   isActive
                     ? "flex items-center mb-1 gap-4 py-2 px-4 rounded-lg bg-[#131517] "
                     : "flex items-center mb-1 gap-4 hover:bg-[#131517] transition-colors py-2 px-4 rounded-lg"
                 }
               >
-                <RiChat4Line />
-                Chats
+                <RiAddLine />
+                New chat
               </NavLink>
             </li>
-            <UserChats />
+            <NavUserChats />
           </ul>
         </div>
 
@@ -60,13 +61,14 @@ function Sidebar() {
           onClick={() => {
             dispatch(resetUser());
             dispatch(resetToken());
+            dispatch(resetMessage());
             navigate("/login", { replace: true });
           }}
           className="flex items-center gap-2 hover:bg-[#131517] transition-colors py-2 px-4 rounded-lg"
         >
           <RiLogoutCircleLine />
           <div>
-            <h5 className="font-medium">Logout</h5>
+            <h5 className="font-medium">Log out</h5>
           </div>
         </button>
       </div>

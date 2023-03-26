@@ -11,6 +11,7 @@ const Login = lazy(() => import("./pages/Login/Login"));
 const Register = lazy(() => import("./pages/Register/Register"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Chat = lazy(() => import("./pages/Chat/Chat"));
+const UserChat = lazy(() => import("./pages/Chat/UserChat"))
 
 function App() {
   return (
@@ -23,7 +24,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route element={<Authenticate />}>
               <Route element={<Dashboard />}>
-                <Route path="/chat" element={<Chat />} />
+                <Route path="/new-chat" element={<Chat />} />
+                <Route path="/chats/:id" element={<UserChat />} />
               </Route>
             </Route>
             <Route path="*" element={<div>Page not found</div>} />

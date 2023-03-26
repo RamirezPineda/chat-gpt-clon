@@ -29,9 +29,9 @@ function Register() {
             <p>
               {error
                 ? "data" in error
-                  ? JSON.stringify(error.data)
+                  ? "Rellene todos los campos"
                   : "no data"
-                : "no error"}
+                : ""}
             </p>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -43,6 +43,7 @@ function Register() {
                 type="name"
                 className="bg-zinc-800 w-full border border-neutral-700 py-2 px-10 rounded-md outline-none"
                 placeholder="Name"
+                required={true}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,6 +68,7 @@ function Register() {
                 type="email"
                 className="bg-zinc-800 w-full border border-neutral-700 py-2 px-10 rounded-md outline-none"
                 placeholder="Email"
+                required={true}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -91,6 +93,7 @@ function Register() {
                 type="password"
                 className="bg-zinc-800  w-full border border-neutral-700  py-2 px-10 rounded-md outline-none"
                 placeholder="Password"
+                required={true}
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +113,7 @@ function Register() {
             <div>
               <button
                 type="submit"
-                className="w-full bg-zinc-900 border border-neutral-800 py-2 px-4 rounded-md hover:bg-zinc-700 transition-colors"
+                className="w-full bg-emerald-500 text-white  py-2 px-4 rounded-md hover:bg-emerald-600  transition-colors"
               >
                 {"Save"}
               </button>

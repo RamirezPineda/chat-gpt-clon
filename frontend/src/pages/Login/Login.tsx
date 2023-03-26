@@ -28,7 +28,7 @@ function Login() {
       const data = await loginUser({ email, password }).unwrap();
       dispatch(createUser(data.user));
       dispatch(createToken(data.token));
-      navigate("/chat", { replace: true });
+      navigate("/new-chat", { replace: true });
     } catch (err) {
       console.log(err);
     }
@@ -39,8 +39,8 @@ function Login() {
       <div className="max-w-lg ">
         <div className="flex justify-center mb-8">
           <img
-            className="rounded"
-            src="https://images.pexels.com/photos/13471114/pexels-photo-13471114.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            className="rounded-lg"
+            src="https://thelasttrombone.files.wordpress.com/2022/12/chatgpt_logo.jpg"
             alt="logo"
             width={100}
             height={120}
@@ -112,7 +112,7 @@ function Login() {
             <div>
               <button
                 type="submit"
-                className="w-full bg-zinc-900 border border-neutral-800 py-2 px-4 rounded-md hover:bg-zinc-700 transition-colors"
+                className="w-full bg-emerald-500 text-white py-2 px-4 rounded-md hover:bg-emerald-600 transition-colors"
               >
                 {"Sign In"}
               </button>

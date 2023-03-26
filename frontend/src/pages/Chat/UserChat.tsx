@@ -1,56 +1,70 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useEffect, ChangeEvent, FormEvent, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { RiSendPlaneFill } from "react-icons/ri";
 
+import Messages from "./components/Messages";
 import { socket } from "../../config/socket";
 import { RootState } from "../../redux/store";
-import { useSendNewMessageMutation } from "../../services/chat.service";
-import { addMessage } from "../../redux/states/messages.state";
-import Messages from "./components/Messages";
+import {
+  useSendMessageMutation,
+  useGetChatQuery,
+} from "../../services/chat.service";
+import { resetMessage } from "../../redux/states/messages.state";
 
-function Chat() {
+function UserChat() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!id || id.length != 24) {
+      return navigate("/new-chat", { replace: true });
+    }
+  }, []);
+
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
-  const messagesState = useSelector((state: RootState) => state.messages);
-  const [sendNewMessage] = useSendNewMessageMutation();
-
+  const { data: chat, isLoading, isError } = useGetChatQuery(`${id}`);
+  const [sendMessage] = useSendMessageMutation();
   const [message, setMessage] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [partialResponse, setPartialResponse] = useState<string>("");
-  const [chatId, setChatId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    dispatch(resetMessage());
+  }, []);
+
+  if (isLoading) return <div>Loading chat</div>;
+  else if (isError) return <div>Error</div>;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    // socket.emit("hello from client", 5, "6", { user: "roy" });
-    // socket.disconnect();
+    setLoading(true);
     try {
       socket.on("partialResponse", (...args) => {
         setPartialResponse(args[0]);
       });
 
-      const response = await sendNewMessage({
+      const response = await sendMessage({
         message,
         userId: user._id,
-        _id: chatId,
+        _id: id,
       }).unwrap();
-      setChatId(response._id);
-      setMessage("");
-      dispatch(addMessage({ message, responseText: response.responseText }));
       setPartialResponse("");
+      setMessage("");
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className=" text-gray-300">
-      <Messages messages={messagesState} />
+    <div className=" text-gray-300  ">
+      <Messages messages={chat?.messages ? chat?.messages : []} />
 
       {partialResponse != "" ? (
         <div className="bg-zinc-700 rounded border border-neutral-500 w-full px-4 py-2 mx-3 mb-8 ">
@@ -74,8 +88,8 @@ function Chat() {
               className="outline-none rounded-l-lg bg-[#1E1F25] border border-neutral-700 w-full block ml-6 flex-1 p-2.5"
             />
             <span className="inline-flex items-center px-3 bg-[#1E1F25] border border-neutral-700 rounded-r-md hover:bg-neutral-700">
-              <button type="submit" disabled={isLoading}>
-                {isLoading ? (
+              <button type="submit" disabled={loading}>
+                {loading ? (
                   <div className=" inline-block h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.130em] motion-reduce:animate-[spin_1.5s_linear_infinite]">
                     <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
                       Loading...
@@ -87,16 +101,10 @@ function Chat() {
               </button>
             </span>
           </div>
-
-          {/* <textarea
-          rows={1}
-            className="bg-[#1E1F25] rounded border border-neutral-700 px-4 py-2 mx-3 w-full"
-            required={true}
-          ></textarea> */}
         </form>
       </div>
     </div>
   );
 }
 
-export default Chat;
+export default UserChat;

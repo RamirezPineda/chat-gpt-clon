@@ -6,8 +6,11 @@ const router = Router();
 
 // router.use(authenticate)
 
+router.post("/chats", ChatController.chatGPT);
+
 router.get("/chats-user/:id", ChatController.getUserChats);
 
-router.post("/chats", ChatController.chatGPT);
+router.get("/chats/:id", ChatController.getChat);
+
 
 export default router;

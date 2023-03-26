@@ -20,7 +20,18 @@ const getUserChats = async (req: Request, res: Response) => {
   }
 };
 
+const getChat = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const chat = await ChatService.getChat(id);
+    res.status(200).json(chat);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 export default {
   chatGPT,
   getUserChats,
+  getChat,
 };

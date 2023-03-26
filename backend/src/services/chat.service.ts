@@ -48,7 +48,12 @@ const getUserChats = async (userId: string) => {
   return userChats;
 };
 
-export default { chatGPT, getUserChats };
+const getChat = async (_id: string) => {
+  const chat = await ChatModel.findOne({ _id: _id });
+  return chat;
+};
+
+export default { chatGPT, getUserChats, getChat };
 
 // import { Configuration, OpenAIApi } from "openai";
 

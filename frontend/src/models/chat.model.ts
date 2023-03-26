@@ -1,14 +1,13 @@
 export interface ChatInfo {
   _id?: string;
   message: string;
-  responseText: string;
-  messageId?: string;
   userId: string;
 }
 
-interface Message {
+export interface Message {
+  _id?: string;
   message: string;
-  messageId: string;
+  messageId?: string;
   responseText: string;
 }
 
