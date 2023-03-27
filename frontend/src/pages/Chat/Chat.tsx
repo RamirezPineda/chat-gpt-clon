@@ -49,7 +49,7 @@ function Chat() {
   };
 
   return (
-    <div className=" text-gray-300">
+    <div className=" text-gray-300 w-full">
       <Messages messages={messagesState} />
 
       {partialResponse != "" ? (

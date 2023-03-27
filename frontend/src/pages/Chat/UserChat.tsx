@@ -63,7 +63,7 @@ function UserChat() {
   };
 
   return (
-    <div className=" text-gray-300  ">
+    <div className=" text-gray-300 w-full">
       <Messages messages={chat?.messages ? chat?.messages : []} />
 
       {partialResponse != "" ? (
