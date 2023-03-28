@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 import { verifyToken } from "../utils/jwt.utils.js";
+
+const { JsonWebTokenError, TokenExpiredError } = jsonwebtoken
 
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
   try {

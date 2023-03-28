@@ -8,7 +8,17 @@ interface ResponseData {
 
 export const chatApi = createApi({
   reducerPath: "chatApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://127.0.0.1:4000" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://127.0.0.1:4000",
+    prepareHeaders: (headers) => {
+      const tokenJson = localStorage.getItem("token");
+      const token = JSON.parse(`${tokenJson}`);
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   tagTypes: ["UserChats", "Chat"],
   endpoints: (builder) => ({
     getChat: builder.query<UserChats, string>({

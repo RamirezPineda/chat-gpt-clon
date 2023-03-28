@@ -4,7 +4,7 @@ import { authenticate } from "../middlewares/authenticate.middleware.js";
 
 const router = Router();
 
-// router.use(authenticate)
+router.use(authenticate)
 
 router.post("/chats", ChatController.chatGPT);
 

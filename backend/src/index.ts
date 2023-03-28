@@ -22,8 +22,8 @@ export const io = new Server(server, {
   },
 });
 
-app.use("/api", chats);
 app.use("/api", auth);
+app.use("/api", chats);
 
 const PORT = process.env.PORT || 4000;
 // app.listen(PORT, () => console.log(`Server on port ${PORT}`));

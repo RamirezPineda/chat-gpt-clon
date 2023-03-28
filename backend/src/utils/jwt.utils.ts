@@ -6,7 +6,7 @@ const { sign, verify } = jsonwebtoken;
 
 const generateToken = ({ _id, email }: User) => {
   const jwt = sign({ _id, email }, JWT_SECRET, {
-    expiresIn: "2h",
+    expiresIn: "10h",
   });
   return jwt;
 };
